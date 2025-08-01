@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getMovieDetail } from '../api/phimApi';
 
+
+
 function decodeHtml(html) {
   const txt = document.createElement('textarea');
   txt.innerHTML = html;
@@ -33,7 +35,7 @@ function MovieDetail() {
   if (!movie) return <div className="text-white p-8">Đang tải...</div>;
 
   return (
-    <div className="bg-black min-h-screen text-white p-8 flex flex-col md:flex-row gap-8">
+    <div className="bg-black min-h-screen text-white p-8 flex flex-col md:flex-row gap-8 pt-16">
       <img
         src={movie.poster_url}
         alt={movie.name}

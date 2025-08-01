@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
   const navigate = useNavigate();
+  const IMAGE_DOMAIN = "https://phimimg.com/";
   return (
     <div
       className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -13,9 +14,10 @@ export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
 
     >
       <img
-        src={movie.poster_url}
+        src={movie.poster_url?.startsWith('http') ? movie.poster_url : IMAGE_DOMAIN + movie.poster_url}
         alt={movie.name}
         className='w-full h-64 object-cover'
+        onError={e => { e.target.onerror = null; e.target.src = '/no-image.png'; }}
       />
       <div className='p-4'>
         <h3 className='text-white text-sm font-semibold truncate mb-2'>{movie.name}</h3>
