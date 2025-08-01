@@ -7,7 +7,7 @@ import MovieSection from '../components/MovieSection';
 
 function Home() {
   const [movies, setMovies] = useState([]);
-  const [actionMovies, setActionMovies] = useState([]); // Thay thế
+  const [actionMovies, setActionMovies] = useState([]);
   const [koreanMovies, setKoreanMovies] = useState([]);
   const [historicalMovies, setHistoricalMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ function Home() {
   useEffect(() => {
     Promise.all([
       getNewMovies(1),
-      getMoviesByGenre('hanh-dong', 1), // Lấy phim hành động
+      getMoviesByGenre('hanh-dong', 1),
       getMoviesByCountry('han-quoc', 1),
       getMoviesByGenre('co-trang', 1)
     ]).then(([newRes, actionRes, koreanRes, historicalRes]) => {

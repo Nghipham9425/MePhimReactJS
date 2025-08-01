@@ -5,11 +5,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MovieDetail from './pages/MovieDetail';
 import Watch from './pages/Watch';
 import Search from './pages/Search';
-
-
+import Home from './pages/Home';
 function App() {
-
-
   return (
     <>
       <Router>
