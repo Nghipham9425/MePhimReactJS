@@ -1,8 +1,17 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-export default function MovieCard({ movie }) {
+
+export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
+  const navigate = useNavigate();
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+    <div
+      className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={() => navigate(`/movie/${movie.slug}`)}
+
+    >
       <img
         src={movie.poster_url}
         alt={movie.name}
