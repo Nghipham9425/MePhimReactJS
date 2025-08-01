@@ -36,7 +36,7 @@ function Navbar() {
       <div className="font-extrabold text-2xl tracking-widest text-red-600 mr-8 select-none">MEPHIM</div>
       <ul className='flex gap-8 uppercase font-semibold text-sm flex-1'>
         <li className='cursor-pointer hover:text-red-500 text-gray-300' onClick={() => navigate('/')}>Trang chủ</li>
-        <li className='cursor-pointer hover:text-red-500 text-gray-300'>Danh mục</li>
+        <li className='cursor-pointer hover:text-red-500 text-gray-300'>Thể loại</li>
         <li className='cursor-pointer hover:text-red-500 text-gray-300'>Quốc gia</li>
         <li className="hover:text-red-500 cursor-pointer text-gray-300">Danh sách phát</li>
       </ul>
@@ -65,7 +65,7 @@ function Navbar() {
         </button>
         {/* User avatar (placeholder) */}
         <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center font-bold text-red-500 cursor-pointer">
-          U
+          KDB
         </div>
       </div>
     </nav>

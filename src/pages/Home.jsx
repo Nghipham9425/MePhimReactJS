@@ -7,8 +7,7 @@ import MovieSection from '../components/MovieSection';
 
 function Home() {
   const [movies, setMovies] = useState([]);
-  const [animationMovies, setAnimationMovies] = useState([]);
-  const [chineseMovies, setChineseMovies] = useState([]);
+  const [actionMovies, setActionMovies] = useState([]); // Thay thế
   const [koreanMovies, setKoreanMovies] = useState([]);
   const [historicalMovies, setHistoricalMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,14 +15,12 @@ function Home() {
   useEffect(() => {
     Promise.all([
       getNewMovies(1),
-      getMoviesByGenre('hoat-hinh', 1),
-      getMoviesByCountry('trung-quoc', 1),
+      getMoviesByGenre('hanh-dong', 1), // Lấy phim hành động
       getMoviesByCountry('han-quoc', 1),
       getMoviesByGenre('co-trang', 1)
-    ]).then(([newRes, animationRes, chineseRes, koreanRes, historicalRes]) => {
+    ]).then(([newRes, actionRes, koreanRes, historicalRes]) => {
       setMovies(newRes.data.items || []);
-      setAnimationMovies(animationRes.data.data?.items || []);
-      setChineseMovies(chineseRes.data.data?.items || []);
+      setActionMovies(actionRes.data.data?.items || []);
       setKoreanMovies(koreanRes.data.data?.items || []);
       setHistoricalMovies(historicalRes.data.data?.items || []);
       setLoading(false);
@@ -38,10 +35,10 @@ function Home() {
     <div className='bg-black min-h-screen'>
       <BannerSlide movies={featuredMovies} overlapNav />
       <div className="px-0">
-        <MovieSection title="Phim mới cập nhật" movies={movies.slice(0, 20)} />
-        <MovieSection title="Phim Trung Quốc" movies={chineseMovies.slice(0, 16)} />
-        <MovieSection title="Phim Hàn Quốc" movies={koreanMovies.slice(0, 17)} />
-        <MovieSection title="Phim cổ trang" movies={historicalMovies.slice(0, 19)} />
+        <MovieSection title="Phim mới cập nhật" movies={movies.slice(0, 10)} />
+        <MovieSection title="Phim Hành Động" movies={actionMovies.slice(0, 10)} /> {/* Thay thế */}
+        <MovieSection title="Phim Hàn Quốc" movies={koreanMovies.slice(0, 10)} />
+        <MovieSection title="Phim cổ trang" movies={historicalMovies.slice(0, 10)} />
       </div>
     </div>
   )

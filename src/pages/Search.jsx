@@ -47,7 +47,15 @@ function Search() {
             onClick={() => navigate(`/movie/${movie.slug}`)}
           >
             <img
-              src={movie.poster_url ? IMAGE_DOMAIN + movie.poster_url : '/no-image.png'}
+              src={
+                movie.poster_url
+                  ? `https://phimapi.com/image.php?url=${encodeURIComponent(
+                    movie.poster_url.startsWith('http')
+                      ? movie.poster_url
+                      : IMAGE_DOMAIN + movie.poster_url
+                  )}`
+                  : '/no-image.png'
+              }
               alt={movie.name}
               className="w-full h-60 object-cover rounded"
               onError={e => { e.target.onerror = null; e.target.src = '/no-image.png'; }}

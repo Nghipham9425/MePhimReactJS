@@ -37,7 +37,7 @@ function MovieDetail() {
   return (
     <div className="bg-black min-h-screen text-white p-8 flex flex-col md:flex-row gap-8 pt-16">
       <img
-        src={movie.poster_url}
+        src={`https://phimapi.com/image.php?url=${encodeURIComponent(movie.poster_url)}`}
         alt={movie.name}
         className="h-[400px] w-auto rounded shadow-lg mb-4 md:mb-0 object-cover"
       />
