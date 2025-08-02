@@ -6,6 +6,7 @@ import MovieDetail from './pages/MovieDetail';
 import Watch from './pages/Watch';
 import Search from './pages/Search';
 import Home from './pages/Home';
+import Footer from './components/Footer';
 function App() {
   return (
     <>
@@ -19,6 +20,7 @@ function App() {
             <Route path="/search" element={<Search />} />
           </Routes>
         </div>
+        <Footer />
       </Router>
     </>
   )
