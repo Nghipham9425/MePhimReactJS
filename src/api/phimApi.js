@@ -23,9 +23,24 @@ export const getGenres = () => {
   return axios.get(`${BASE_URL}/the-loai`);
 }
 
-export const getMoviesByGenre =(genreSlug,page=1) =>
-{
-  return axios.get(`${BASE_URL}/v1/api/the-loai/${genreSlug}?page=${page}`);
+export const getMoviesByGenre = (
+  genreSlug,
+  page = 1,
+  sortField = "modified.time",
+  sortType = "desc",
+  sortLang = "",
+  country = "",
+  year = ""
+) => {
+  const params = [
+    `page=${page}`,
+    `sort_field=${sortField}`,
+    `sort_type=${sortType}`,
+    sortLang ? `sort_lang=${sortLang}` : "",
+    country ? `country=${country}` : "",
+    year ? `year=${year}` : ""
+  ].filter(Boolean).join("&");
+  return axios.get(`${BASE_URL}/v1/api/the-loai/${genreSlug}?${params}`);
 }
 
 export const getCountry = () => {

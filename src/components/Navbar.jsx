@@ -8,6 +8,33 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const genres = [
+    { name: "Hành Động", slug: "hanh-dong" },
+    { name: "Miền Tây", slug: "mien-tay" },
+    { name: "Trẻ Em", slug: "tre-em" },
+    { name: "Lịch Sử", slug: "lich-su" },
+    { name: "Cổ Trang", slug: "co-trang" },
+    { name: "Chiến Tranh", slug: "chien-tranh" },
+    { name: "Viễn Tưởng", slug: "vien-tuong" },
+    { name: "Kinh Dị", slug: "kinh-di" },
+    { name: "Tài Liệu", slug: "tai-lieu" },
+    { name: "Bí Ẩn", slug: "bi-an" },
+    { name: "Tình Cảm", slug: "tinh-cam" },
+    { name: "Tâm Lý", slug: "tam-ly" },
+    { name: "Thể Thao", slug: "the-thao" },
+    { name: "Phiêu Lưu", slug: "phieu-luu" },
+    { name: "Âm Nhạc", slug: "am-nhac" },
+    { name: "Gia Đình", slug: "gia-dinh" },
+    { name: "Học Đường", slug: "hoc-duong" },
+    { name: "Hài Hước", slug: "hai-huoc" },
+    { name: "Hình Sự", slug: "hinh-su" },
+    { name: "Võ Thuật", slug: "vo-thuat" },
+    { name: "Khoa Học", slug: "khoa-hoc" },
+    { name: "Thần Thoại", slug: "than-thoai" },
+    { name: "Chính Kịch", slug: "chinh-kich" },
+    { name: "Kinh Điển", slug: "kinh-dien" }
+  ];
+
   const isHome = location.pathname === '/';
 
   useEffect(() => {
@@ -15,6 +42,9 @@ function Navbar() {
       setScrolled(true);
       return;
     }
+
+
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
@@ -45,7 +75,25 @@ function Navbar() {
       <ul className={`fixed md:static top-16 left-0 w-full md:w-auto bg-black md:bg-transparent flex-col md:flex-row md:flex gap-8 uppercase font-semibold text-sm transition-all duration-300
         ${menuOpen ? 'flex' : 'hidden'} md:flex`}>
         <li className='cursor-pointer hover:text-red-500 text-gray-300 px-4 py-2 md:p-0' onClick={() => { navigate('/'); setMenuOpen(false); }}>Trang chủ</li>
-        <li className='cursor-pointer hover:text-red-500 text-gray-300 px-4 py-2 md:p-0'>Thể loại</li>
+        <li className='relative cursor-pointer hover:text-red-500 text-gray-200 px-4 py-2 md:p-0 font-medium'
+          onMouseEnter={() => setMenuOpen(true)}
+          onMouseLeave={() => setMenuOpen(false)}
+        >
+          Thể loại
+          {menuOpen && (
+            <ul className="absolute left-0 top-full mt-1 w-80 bg-gray-900 rounded-xl shadow-2xl border border-gray-700 z-50 grid grid-cols-2 gap-0 py-2">
+              {genres.map(genre => (
+                <li
+                  key={genre.slug}
+                  className="px-5 py-2.5 bg-gray-900 text-white hover:bg-gray-800 hover:text-red-500 cursor-pointer whitespace-nowrap rounded-lg transition-colors"
+                  onClick={() => { navigate(`/genre?genre=${genre.slug}`); setMenuOpen(false); }}
+                >
+                  {genre.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
         <li className='cursor-pointer hover:text-red-500 text-gray-300 px-4 py-2 md:p-0'>Quốc gia</li>
         <li className="hover:text-red-500 cursor-pointer text-gray-300 px-4 py-2 md:p-0">Danh sách phát</li>
         {/* Search box (ẩn trên md, hiện ở mobile menu) */}

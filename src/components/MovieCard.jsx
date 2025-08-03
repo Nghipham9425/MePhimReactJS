@@ -15,11 +15,11 @@ export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
     >
       <img
         src={
-          movie.poster_url
+          movie.thumb_url
             ? `https://phimapi.com/image.php?url=${encodeURIComponent(
-              movie.poster_url.startsWith('http')
-                ? movie.poster_url
-                : IMAGE_DOMAIN + movie.poster_url
+              movie.thumb_url.startsWith('http')
+                ? movie.thumb_url
+                : IMAGE_DOMAIN + movie.thumb_url
             )}`
             : '/no-image.png'
         }
