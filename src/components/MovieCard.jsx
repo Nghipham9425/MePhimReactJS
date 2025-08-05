@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import he from 'he';
 
 export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
   const navigate = useNavigate();
@@ -23,13 +23,13 @@ export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
             )}`
             : '/no-image.png'
         }
-        alt={movie.name}
+        alt={he.decode(movie.name)}
         className='w-full h-64 object-cover'
         onError={e => { e.target.onerror = null; e.target.src = '/no-image.png'; }}
       />
       <div className='p-4'>
-        <h3 className='text-white text-sm font-semibold truncate mb-2'>{movie.name}</h3>
-        <p className='text-gray-400 text-xs mb-1'>{movie.origin_name}</p>
+        <h3 className='text-white text-sm font-semibold truncate mb-2'>{he.decode(movie.name)}</h3>
+        <p className='text-gray-400 text-xs mb-1'>{movie.origin_name ? he.decode(movie.origin_name) : ''}</p>
         <p className='text-gray-500 text-xs'>{movie.year}</p>
       </div>
     </div>

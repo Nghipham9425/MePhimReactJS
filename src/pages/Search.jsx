@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-const IMAGE_DOMAIN = "https://phimimg.com/";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { searchMovies } from '../api/phimApi';
+import MovieCard from '../components/MovieCard';
+import Loading from '../components/Loading';
 
 function Search() {
-  const query = useQuery();
-  const q = query.get('q');
-  const pageParam = parseInt(query.get('page')) || 1;
+  const [searchParams] = useSearchParams();
+  const q = searchParams.get('q');
+  const pageParam = parseInt(searchParams.get('page')) || 1;
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(pageParam);
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
@@ -22,69 +19,86 @@ function Search() {
   }, [pageParam, q]);
 
   useEffect(() => {
-    if (q) {
-      axios
-        .get(`https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(q)}&page=${page}&limit=20`)
+    if (q && q.trim()) {
+      setLoading(true);
+      searchMovies(q.trim(), page)
         .then(res => {
-          setResults(res.data.data.items || []);
-          setTotalPages(res.data.data.params?.pagination?.totalPages || 1);
+          const data = res.data.data;
+          setResults(data?.items || []);
+          setTotalPages(data?.params?.pagination?.totalPages || 1);
+          setLoading(false);
+        })
+        .catch(() => {
+          setResults([]);
+          setLoading(false);
         });
     }
   }, [q, page]);
 
   const handlePageChange = (newPage) => {
     navigate(`/search?q=${encodeURIComponent(q)}&page=${newPage}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
-    <div className="bg-black min-h-screen text-white p-8 pt-24">
-      <h2 className="text-2xl font-bold mb-4">Kết quả cho: "{q}"</h2>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {results.map(movie => (
-          <div
-            key={movie._id}
-            className="bg-gray-900 rounded p-2 cursor-pointer hover:bg-red-700 transition"
-            onClick={() => navigate(`/movie/${movie.slug}`)}
-          >
-            <img
-              src={
-                movie.poster_url
-                  ? `https://phimapi.com/image.php?url=${encodeURIComponent(
-                    movie.poster_url.startsWith('http')
-                      ? movie.poster_url
-                      : IMAGE_DOMAIN + movie.poster_url
-                  )}`
-                  : '/no-image.png'
-              }
-              alt={movie.name}
-              className="w-full h-60 object-cover rounded"
-              onError={e => { e.target.onerror = null; e.target.src = '/no-image.png'; }}
-            />
-            <div className="mt-2 font-bold">{movie.name}</div>
-          </div>
-        ))}
-      </div>
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-8 gap-2">
-          <button
-            className="px-3 py-1 bg-gray-700 rounded hover:bg-red-600 disabled:opacity-50"
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 1}
-          >
-            Trang trước
-          </button>
-          <span className="px-3 py-1">{page} / {totalPages}</span>
-          <button
-            className="px-3 py-1 bg-gray-700 rounded hover:bg-red-600 disabled:opacity-50"
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages}
-          >
-            Trang sau
-          </button>
+  if (loading) return <Loading />;
+
+  if (!q?.trim()) {
+    return (
+      <div className="bg-black min-h-screen text-white pt-20">
+        <div className="text-center py-20">
+          <h3 className="text-xl text-gray-400 mb-4">Vui lòng nhập từ khóa tìm kiếm</h3>
         </div>
-      )}
-      {results.length === 0 && <div className="text-gray-400 mt-8">Không tìm thấy phim nào.</div>}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-black min-h-screen text-white pt-20">
+      <div className="px-4 py-6">
+        <div className="mb-6">
+          <h1 className="text-xl md:text-2xl font-bold mb-2">
+            Kết quả tìm kiếm: "{q}"
+          </h1>
+          <p className="text-gray-400 text-sm">
+            Tìm thấy {results.length} kết quả
+          </p>
+        </div>
+
+        {results.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4 mb-8">
+              {results.map(movie => (
+                <MovieCard key={movie._id} movie={movie} />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-4 py-6">
+                <button
+                  className="px-4 py-2 bg-gray-700 rounded hover:bg-red-600 disabled:opacity-50"
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                >
+                  Trang trước
+                </button>
+                <span className="text-sm">Trang {page} / {totalPages}</span>
+                <button
+                  className="px-4 py-2 bg-gray-700 rounded hover:bg-red-600 disabled:opacity-50"
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages}
+                >
+                  Trang sau
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-20">
+            <h3 className="text-xl text-gray-400 mb-4">Không tìm thấy kết quả nào</h3>
+            <p className="text-gray-500">Thử tìm kiếm với từ khóa khác</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
