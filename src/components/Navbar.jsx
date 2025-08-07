@@ -18,12 +18,27 @@ const genres = [
   { name: "Trẻ Em", slug: "tre-em" },
   { name: "Thể Thao", slug: "the-thao" }
 ];
+const countries = [
+  { name: "Hàn Quốc", slug: "han-quoc" },
+  { name: "Âu Mỹ", slug: "au-my" },
+  { name: "Trung Quốc", slug: "trung-quoc" },
+  { name: "Nhật Bản", slug: "nhat-ban" },
+  { name: "Thái Lan", slug: "thai-lan" },
+  { name: "Ấn Độ", slug: "an-do" },
+  { name: "Hồng Kông", slug: "hong-kong" },
+  { name: "Đài Loan", slug: "dai-loan" },
+  { name: "Việt Nam", slug: "viet-nam" },
+  { name: "Anh", slug: "anh" },
+  { name: "Pháp", slug: "phap" },
+  { name: "Đức", slug: "duc" }
+];
 
 function Navbar() {
   const [keyword, setKeyword] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [genreOpen, setGenreOpen] = useState(false);
+  const [countryOpen, setCountryOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -106,7 +121,37 @@ function Navbar() {
           )}
         </li>
 
-        <li className='cursor-pointer hover:text-red-500 text-white px-4 py-2 md:p-0'>Quốc gia</li>
+        <li className='relative cursor-pointer hover:text-red-500 text-white px-4 py-2 md:p-0'
+          onMouseEnter={() => setCountryOpen(true)}
+          onMouseLeave={() => setCountryOpen(false)}
+          onClick={() => setCountryOpen(!countryOpen)}>
+
+          <div className="flex items-center justify-between md:justify-start">
+            Quốc gia
+            <svg className={`w-4 h-4 ml-1 transform transition-transform md:hidden ${countryOpen ? 'rotate-180' : ''}`}
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          {countryOpen && (
+            <ul className="mt-2 md:absolute md:left-0 md:top-full md:mt-1 md:w-80 bg-gray-800 md:bg-gray-900 rounded-lg md:rounded-xl shadow-2xl border border-gray-700 z-30 grid grid-cols-2 md:grid-cols-3 gap-1 p-2 max-h-60 md:max-h-80 overflow-y-auto">
+              {countries.map(country => (
+                <li
+                  key={country.slug}
+                  className="px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm text-white hover:bg-gray-700 hover:text-red-500 cursor-pointer rounded transition-colors whitespace-nowrap"
+                  onClick={() => {
+                    navigate(`/country?country=${country.slug}&name=${encodeURIComponent(country.name)}`);
+                    setCountryOpen(false);
+                    setMenuOpen(false);
+                  }}
+                >
+                  {country.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
         <li className="hover:text-red-500 cursor-pointer text-white px-4 py-2 md:p-0">Danh sách phát</li>
 
         {/* Mobile Search */}

@@ -78,7 +78,7 @@ function Genre() {
 
 
   return (
-    <div className="bg-black min-h-screen pt-20">
+    <div className="bg-black min-h-screen pt-20 px-4 md:px-8">
       <div className="px-4 mb-6 flex gap-4">
         <select
           value={sortField}

@@ -47,8 +47,21 @@ export const getCountry = () => {
   return axios.get(`${BASE_URL}/quoc-gia`);
 }
 
-export const getMoviesByCountry = (countrySlug, page=1) => {
-  return axios.get(`${BASE_URL}/v1/api/quoc-gia/${countrySlug}?page=${page}`);
+export const getMoviesByCountry = (
+  countrySlug, 
+  page = 1, 
+  sortField = "modified.time", 
+  sortType = "desc", 
+  year = ""
+) => {
+  const params = [
+    `page=${page}`,
+    `sort_field=${sortField}`,
+    `sort_type=${sortType}`,
+    year ? `year=${year}` : ""
+  ].filter(Boolean).join("&");
+  
+  return axios.get(`${BASE_URL}/v1/api/quoc-gia/${countrySlug}?${params}`);
 }
 
 export const getMoviesByType= (type, page=1) =>
