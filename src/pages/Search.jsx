@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { searchMovies } from '../api/phimApi';
-import MovieCard from '../components/MovieCard';
-import Loading from '../components/Loading';
+import MovieCard from '../components/common/MovieCard';
+import Loading from '../components/common/Loading';
+import Pagination from '../components/pagination/Pagination';
 
 function Search() {
   const [searchParams] = useSearchParams();
@@ -73,23 +74,11 @@ function Search() {
             </div>
 
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-4 py-6">
-                <button
-                  className="px-4 py-2 bg-gray-700 rounded hover:bg-red-600 disabled:opacity-50"
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                >
-                  Trang trước
-                </button>
-                <span className="text-sm">Trang {page} / {totalPages}</span>
-                <button
-                  className="px-4 py-2 bg-gray-700 rounded hover:bg-red-600 disabled:opacity-50"
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === totalPages}
-                >
-                  Trang sau
-                </button>
-              </div>
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             )}
           </>
         ) : (

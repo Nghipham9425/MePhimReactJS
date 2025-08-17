@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getMovieDetail } from '../api/phimApi';
 import he from 'he';
-import Loading from '../components/Loading';
+import Loading from '../components/common/Loading';
 
 function chunkArray(array, size) {
   const result = [];

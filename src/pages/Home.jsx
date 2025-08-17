@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Loading from '../components/Loading';
-import MovieCard from '../components/MovieCard';
+import Loading from '../components/common/Loading';
+import MovieCard from '../components/common/MovieCard';
 import { getNewMovies, getMoviesByGenre, getMoviesByCountry } from '../api/phimApi';
 import BannerSlide from '../components/BannerSlide';
 import MovieSection from '../components/MovieSection';
@@ -35,10 +35,10 @@ function Home() {
     <div className='bg-black min-h-screen'>
       <BannerSlide movies={featuredMovies} overlapNav />
       <div className="px-0">
-        <MovieSection title="Phim mới cập nhật" movies={movies.slice(0, 10)} />
-        <MovieSection title="Phim Hành Động" movies={actionMovies.slice(0, 10)} /> {/* Thay thế */}
-        <MovieSection title="Phim Hàn Quốc" movies={koreanMovies.slice(0, 10)} />
-        <MovieSection title="Phim cổ trang" movies={historicalMovies.slice(0, 10)} />
+        <MovieSection title="Phim mới cập nhật" movies={movies.slice(0, 10)} grid loading={loading} />
+        <MovieSection title="Phim Hành Động" movies={actionMovies.slice(0, 10)} grid loading={loading} />
+        <MovieSection title="Phim Hàn Quốc" movies={koreanMovies.slice(0, 10)} grid loading={loading} />
+        <MovieSection title="Phim cổ trang" movies={historicalMovies.slice(0, 10)} grid loading={loading} />
       </div>
     </div>
   )

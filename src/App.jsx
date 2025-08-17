@@ -1,33 +1,30 @@
-import Loading from './components/Loading'
-import Navbar from './components/Navbar'
-import MovieCard from './components/MovieCard';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 import MovieDetail from './pages/MovieDetail';
 import Watch from './pages/Watch';
 import Search from './pages/Search';
-import Home from './pages/Home';
-import Footer from './components/Footer';
 import Genre from './pages/Genre';
 import Country from './pages/Country';
+
 function App() {
   return (
-    <>
-      <Router>
+    <Router>
+      <>
         <Navbar />
-        <div>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/movie/:id" element={<MovieDetail />} />
-            <Route path="/watch/:slug/:tap" element={<Watch />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/genre" element={<Genre />} />
-            <Route path="/country" element={<Country />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/watch/:slug/:tap" element={<Watch />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/genre" element={<Genre />} />
+          <Route path="/country" element={<Country />} />
+        </Routes>
         <Footer />
-      </Router>
-    </>
-  )
+      </>
+    </Router>
+  );
 }
 
-export default App
+export default App;

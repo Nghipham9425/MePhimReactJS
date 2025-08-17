@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import { getMoviesByCountry } from '../api/phimApi';
 import MovieSection from '../components/MovieSection';
-import Loading from '../components/Loading';
+import Loading from '../components/common/Loading';
+import Pagination from '../components/pagination/Pagination';
+import FilterControls from '../components/filters/FilterControls';
 
 function Country() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate(); // Thêm dòng này
   const countrySlug = searchParams.get('country');
   const countryName = searchParams.get('name') || countrySlug;
+  const pageParam = parseInt(searchParams.get('page')) || 1; // Thêm dòng này
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(pageParam); // Sửa lại dùng pageParam
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [sortField, setSortField] = useState("modified.time");
   const [sortType, setSortType] = useState("desc");
+
+  useEffect(() => {
+    setCurrentPage(pageParam); // Khi URL đổi page thì cập nhật lại state
+  }, [pageParam]);
 
   useEffect(() => {
     if (countrySlug) {
@@ -28,37 +36,29 @@ function Country() {
       ).then(res => {
         setMovies(res.data.data?.items || []);
         setTotalPages(res.data.data?.params?.pagination?.totalPages || 1);
-        setTotalItems(res.data.data?.params?.pagination?.totalItems || 0); // Lấy tổng số items
+        setTotalItems(res.data.data?.params?.pagination?.totalItems || 0);
         setLoading(false);
       }).catch(() => setLoading(false));
     }
   }, [countrySlug, currentPage, sortField, sortType]);
+
+  // Khi đổi trang, cập nhật URL
+  const handlePageChange = (newPage) => {
+    navigate(`/country?country=${countrySlug}&name=${countryName}&page=${newPage}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) return <Loading />;
 
   return (
     <div className="bg-black min-h-screen pt-20">
       <div className="px-4 md:px-8">
-        {/* Filters */}
-        <div className="mb-6 flex gap-4">
-          <select
-            value={sortField}
-            onChange={(e) => setSortField(e.target.value)}
-            className="bg-gray-800 text-white px-3 py-2 rounded"
-          >
-            <option value="modified.time">Cập nhật mới nhất</option>
-            <option value="name">Theo chữ cái (A-Z)</option>
-            <option value="year">Theo năm</option>
-          </select>
-          <select
-            value={sortType}
-            onChange={(e) => setSortType(e.target.value)}
-            className="bg-gray-800 text-white px-3 py-2 rounded"
-          >
-            <option value="desc">Giảm dần</option>
-            <option value="asc">Tăng dần</option>
-          </select>
-        </div>
+        <FilterControls
+          sortField={sortField}
+          setSortField={setSortField}
+          sortType={sortType}
+          setSortType={setSortType}
+        />
 
         {/* Total count */}
         <div className="mb-6">
@@ -68,27 +68,15 @@ function Country() {
         </div>
 
         {/* Movies */}
-        <MovieSection title={`Phim ${countryName}`} movies={movies} grid />
+        <MovieSection title={`Phim ${countryName}`} movies={movies} grid loading={loading} />
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-2 py-6">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-              className="px-3 py-1 bg-gray-700 text-white rounded disabled:opacity-50"
-            >
-              Trang trước
-            </button>
-            <span className="text-white px-2">Trang {currentPage} / {totalPages}</span>
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-              className="px-3 py-1 bg-gray-700 text-white rounded disabled:opacity-50"
-            >
-              Trang sau
-            </button>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         )}
       </div>
     </div>
