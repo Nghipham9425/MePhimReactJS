@@ -7,7 +7,7 @@ function MovieSection({ title, movies, grid, loading = false }) {
 
   return (
     <div className="px-0">
-      <h1 className="text-white text-2xl font-bold mb-6 px-4">{title}</h1>
+      <h1 className="text-white text-2xl font-bold mb-6 mt-6 px-4">{title}</h1>
       {grid ? (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 px-4">
           {loading

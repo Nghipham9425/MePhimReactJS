@@ -4,13 +4,20 @@ import MovieCard from '../components/common/MovieCard';
 import { getNewMovies, getMoviesByGenre, getMoviesByCountry } from '../api/phimApi';
 import BannerSlide from '../components/BannerSlide';
 import MovieSection from '../components/MovieSection';
-
+import { fetchMoviesAPI } from '../api'
 function Home() {
+  const [testMovies, setTestMovies] = useState([])
   const [movies, setMovies] = useState([]);
   const [actionMovies, setActionMovies] = useState([]);
   const [koreanMovies, setKoreanMovies] = useState([]);
   const [historicalMovies, setHistoricalMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchMoviesAPI().then(testMovies => {
+      setTestMovies(testMovies)
+    })
+  }, [])
 
   useEffect(() => {
     Promise.all([
@@ -32,7 +39,7 @@ function Home() {
   const featuredMovies = movies.slice(0, 7);
 
   return (
-    <div className='bg-black min-h-screen'>
+    <div className='bg-black min-h-screen pb-5'>
       <BannerSlide movies={featuredMovies} overlapNav />
       <div className="px-0">
         <MovieSection title="Phim mới cập nhật" movies={movies.slice(0, 10)} grid loading={loading} />

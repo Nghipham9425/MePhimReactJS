@@ -11,7 +11,6 @@ export default function MovieCard({ movie, onMouseEnter, onMouseLeave }) {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={() => navigate(`/movie/${movie.slug}`)}
-
     >
       <img
         src={
