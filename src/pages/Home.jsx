@@ -1,51 +1,65 @@
 import React, { useEffect, useState } from 'react'
-import Loading from '../components/common/Loading';
-import MovieCard from '../components/common/MovieCard';
-import { getNewMovies, getMoviesByGenre, getMoviesByCountry } from '../api/phimApi';
-import BannerSlide from '../components/BannerSlide';
-import MovieSection from '../components/MovieSection';
-import { fetchMoviesAPI } from '../api'
+import Loading from '../components/common/Loading'
+import BannerSlide from '../components/BannerSlide'
+import MovieSection from '../components/MovieSection'
+import { fetchRecentMoviesAPI, fetchMoviesByCategory, fetchMoviesByCountry } from '../api'
+
 function Home() {
-  const [testMovies, setTestMovies] = useState([])
-  const [movies, setMovies] = useState([]);
-  const [actionMovies, setActionMovies] = useState([]);
-  const [koreanMovies, setKoreanMovies] = useState([]);
-  const [historicalMovies, setHistoricalMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState([])
+  const [actionMovies, setActionMovies] = useState([])
+  const [koreanMovies, setKoreanMovies] = useState([])
+  const [dramaMovies, setDramaMovies] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchMoviesAPI().then(testMovies => {
-      setTestMovies(testMovies)
-    })
-  }, [])
+    setLoading(true)
 
-  useEffect(() => {
     Promise.all([
-      getNewMovies(1),
-      getMoviesByGenre('hanh-dong', 1),
-      getMoviesByCountry('han-quoc', 1),
-      getMoviesByGenre('co-trang', 1)
-    ]).then(([newRes, actionRes, koreanRes, historicalRes]) => {
-      setMovies(newRes.data.items || []);
-      setActionMovies(actionRes.data.data?.items || []);
-      setKoreanMovies(koreanRes.data.data?.items || []);
-      setHistoricalMovies(historicalRes.data.data?.items || []);
-      setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+      fetchRecentMoviesAPI(15),
+      fetchMoviesByCategory('hanh-dong', 1, 10),
+      fetchMoviesByCountry('han-quoc', 1, 10),
+      fetchMoviesByCategory('chinh-kich', 1, 10)
+    ])
+      .then(([recentRes, actionRes, koreanRes, dramaRes]) => {
+        setMovies(recentRes.data?.data || [])
+        setActionMovies(actionRes.data?.data || [])
+        setKoreanMovies(koreanRes.data?.data || [])
+        setDramaMovies(dramaRes.data?.data || [])
+      })
+      .catch(err => {
+        console.error('Lỗi tải dữ liệu trang chủ:', err)
+      })
+      .finally(() => setLoading(false))
+  }, [])
 
   if (loading) return <Loading />
 
-  const featuredMovies = movies.slice(0, 7);
+  const featuredMovies = movies.slice(0, 8)
 
   return (
     <div className='bg-black min-h-screen pb-5'>
       <BannerSlide movies={featuredMovies} overlapNav />
       <div className="px-0">
-        <MovieSection title="Phim mới cập nhật" movies={movies.slice(0, 10)} grid loading={loading} />
-        <MovieSection title="Phim Hành Động" movies={actionMovies.slice(0, 10)} grid loading={loading} />
-        <MovieSection title="Phim Hàn Quốc" movies={koreanMovies.slice(0, 10)} grid loading={loading} />
-        <MovieSection title="Phim cổ trang" movies={historicalMovies.slice(0, 10)} grid loading={loading} />
+        <MovieSection
+          title="Phim mới cập nhật"
+          movies={movies.slice(0, 10)}
+          slider
+        />
+        <MovieSection
+          title="Phim Hành Động"
+          movies={actionMovies.slice(0, 10)}
+          slider
+        />
+        <MovieSection
+          title="Phim Hàn Quốc"
+          movies={koreanMovies.slice(0, 10)}
+          slider
+        />
+        <MovieSection
+          title="Phim Chính Kịch"
+          movies={dramaMovies.slice(0, 10)}
+          slider
+        />
       </div>
     </div>
   )
