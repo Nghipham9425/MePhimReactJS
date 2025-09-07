@@ -21,8 +21,14 @@ export const fetchMovieBySlugAPI = (slug) => {
   return axios.get(`${API_ROOT}/v1/movies/${slug}`)
 }
 
-export const searchMovie = (name) => {
-  return axios.get(`${API_ROOT}/v1/movies?q=${name}`)
+export const searchMovie = (name ,page = 1, limit = 12) => {
+  return axios.get(`${API_ROOT}/v1/movies`,{
+    params:{
+      q:name,
+      page,
+      limit
+    }
+  })
 }
 
 export const fetchRelatedMoviesAPI = (slug) => {

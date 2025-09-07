@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { searchMovies } from '../api/phimApi';
+import { searchMovie } from '../api';
 import MovieCard from '../components/common/MovieCard';
 import Loading from '../components/common/Loading';
 import Pagination from '../components/pagination/Pagination';
@@ -22,7 +22,7 @@ function Search() {
   useEffect(() => {
     if (q && q.trim()) {
       setLoading(true);
-      searchMovies(q.trim(), page)
+      searchMovie(q.trim(), page)
         .then(res => {
           const data = res.data.data;
           setResults(data?.items || []);
