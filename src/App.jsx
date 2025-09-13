@@ -9,10 +9,13 @@ import Genre from './pages/Genre';
 import Country from './pages/Country';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 
 function AppContent() {
   const location = useLocation();
+
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
   return (
     <>
       {!isAuthPage && <Navbar />}
@@ -25,6 +28,7 @@ function AppContent() {
         <Route path="/country" element={<Country />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       {!isAuthPage && <Footer />}
     </>
