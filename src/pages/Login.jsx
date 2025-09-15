@@ -21,7 +21,7 @@ function Login() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-black">
+    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-[url('https://images.unsplash.com/photo-1755429518361-1d6060edcf3c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className='mx-auto h-12 w-auto flex items-center justify-center'>
           <h1 className='text-3xl font-extrabold text-red-600 tracking-widest'>MePhim</h1>
@@ -31,7 +31,7 @@ function Login() {
         <form onSubmit={handleSubmit} className="space-y-3">
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+            <label htmlFor="email" className="block text-sm font-medium text-white">
               Địa chỉ email
             </label>
             <div className='mt-2'>
@@ -44,7 +44,7 @@ function Login() {
                 onChange={handleChange}
                 autoComplete="email"
                 placeholder='Nhập email của bạn'
-                className='block w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent'
+                className='block w-full rounded-md bg-zinc-800 border border-gray-700 px-3 py-2 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent'
               />
             </div>
           </div>
@@ -52,7 +52,7 @@ function Login() {
           {/* Password */}
           <div>
             <div className='flex items-center justify-between'>
-              <label htmlFor='password' className='block text-sm font-medium text-gray-300'>
+              <label htmlFor='password' className='block text-sm font-medium text-white'>
                 Mật khẩu
               </label>
             </div>
@@ -66,7 +66,7 @@ function Login() {
                 required
                 autoComplete="current-password"
                 placeholder="Nhập mật khẩu"
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 pr-10 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="block w-full rounded-md bg-zinc-800 border border-gray-700 px-3 py-2 pr-10 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
               <button
                 type="button"
@@ -87,7 +87,7 @@ function Login() {
             </div>
           </div>
           <div className='text-sm text-right pr-4'>
-            <a href='#' className='font-semibold text-red-400 hover:text-red-300'>
+            <a href='#' className='font-semibold text-red-600 hover:text-red-300'>
               Quên mật khẩu?
             </a>
           </div>
@@ -101,9 +101,9 @@ function Login() {
           </div>
         </form>
 
-        <p className="mt-5 text-center text-sm text-gray-400">
+        <p className="mt-5 text-center text-sm text-white">
           Chưa có tài khoản?{' '}
-          <a href="/register" className="font-semibold text-red-400 hover:text-red-300">
+          <a href="/register" className="font-semibold text-red-600 hover:text-red-300">
             Đăng ký ngay
           </a>
         </p>
